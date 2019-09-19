@@ -1,0 +1,20 @@
+{
+  "name": "wicked-ways-groceries-list",
+  "version": "1.0.0",
+  "description": "Grocery list",
+  "main": "server/server.js",
+  "scripts": {
+    "start": "node server/server.js",
+    "heroku-postbuild": "cd client-side && npm install --only=dev && npm install && npm run build",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "engines": {
+    "npm": "5.7.1",
+    "node": "10.x"
+  },
+  "dependencies": {
+
+  },
+  "author": "Shane Finlayson",
+  "license": "ISC"
+}
