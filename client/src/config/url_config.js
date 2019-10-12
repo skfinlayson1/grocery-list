@@ -1,0 +1,1 @@
+export const url = process.env.NODE_ENV === "production" ? `https://wicked-ways-grocery-list.herokuapp.com` : `http://localhost:8080`;

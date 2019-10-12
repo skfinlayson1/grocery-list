@@ -1,0 +1,23 @@
+body {
+    box-sizing: border-box;
+    text-align: center;
+    background-color: black;
+    color: white;
+    margin: 0px;
+}
+
+a {
+    text-decoration: none;
+    text-decoration-color: white;
+    color: white;
+}
+
+main {
+    margin-top: 14vw;
+}
+
+@media all and (min-width: 515px) {
+    main {
+        margin-top: 4.5rem;
+    }
+}
