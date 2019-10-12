@@ -25,7 +25,7 @@ class GroceryList extends React.Component {
         }
         // function to make request to server for grocery list items
         function makeRequest(state) {
-            fetch(`${url}/grocery-list/show/${this.props.url.match.params.name}`)
+            fetch(`${url}/grocery-list/show/${state.props.url.match.params.name}`)
             .then((res) => res.json().then((res) => {
                 const items = res.groceryitems;
                 state.setState((prev) => {
