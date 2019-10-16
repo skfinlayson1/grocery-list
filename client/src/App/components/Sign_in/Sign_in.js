@@ -48,18 +48,6 @@ class SignIn extends React.Component {
         }))
     }
 
-// Sign Out --------------------------------------------------------------
-    signOut = (e) => {
-        e.preventDefault();
-
-        fetch(`${url}/logout`)
-        .then((res) => res.json().then((res) => {
-            if (res.messages) {
-                this.setState((prev) => {return {messages: prev.messages = res.messages}})
-            }
-        }))
-    }
-
 // Render ==============================================================================
     render() {
         if (!this.state.completed) {
@@ -89,7 +77,6 @@ class SignIn extends React.Component {
                         ></input>
 
                         <button onClick={this.handleSubmit}>Submit</button>
-                        <button onClick={this.signOut}>Sign Out</button>
                     </form>
                 </div>
             )
