@@ -2,11 +2,14 @@ import React from "react";
 import {Redirect} from "react-router-dom";
 import {url} from "../../../config/url_config";
 
+import InfoMessages from "../InfoMessages";
+
 class NewList extends React.Component {
     constructor() {
         super();
         this.state = {
             name: null,
+            messages: false,
             completed: false
         }
     }
@@ -31,8 +34,11 @@ class NewList extends React.Component {
             }
         })
         .then((res) => res.json().then((res) => {
-            // HANDLE ERRORS !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-            this.setState((prev) => {return {completed: prev.completed = true}})
+            if (res.messages) {
+                this.setState((prev) => {return {messages: prev.messages = res.messages}})
+            } else {
+                this.setState((prev) => {return {completed: prev.completed = true}})
+            }
         }))
     }
 
@@ -40,6 +46,9 @@ class NewList extends React.Component {
         if (!this.state.completed) {
             return (
                 <div id="new-list">
+
+                    <InfoMessages messages={this.state.messages} />
+
                     <h1>Create a new list</h1>
                     <form>
                         <label htmlFor="name">Name of new grocery list</label>

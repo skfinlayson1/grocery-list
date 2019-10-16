@@ -3,6 +3,7 @@ import {NavLink} from "react-router-dom";
 import {url} from "../../../config/url_config";
 
 import GroceryListTable from "./components/GroceryItemTable";
+import InfoMessages from "../InfoMessages";
 
 class GroceryList extends React.Component {
     constructor(props) {
@@ -10,11 +11,12 @@ class GroceryList extends React.Component {
         this.state = {
             items: [],
             interval: null,
+            messages: false,
             loading: true
         }
     }
 
-// MOUNT -------------------------------------------------------------------------
+// Componet did mount -----------------------------------------------------------------
     componentDidMount() {
         // function to create an interval to check for new grocery items every 15 seconds
         function interval(state) {
@@ -27,10 +29,13 @@ class GroceryList extends React.Component {
         function makeRequest(state) {
             fetch(`${url}/grocery-list/show/${state.props.url.match.params.name}`)
             .then((res) => res.json().then((res) => {
-                const items = res.groceryitems;
-                state.setState((prev) => {
-                    return {items: prev.items = items, loading: prev.loading = false}
-                })
+                if (res.messages) {
+                    state.setState((prev) => {return {messages: prev.messages = res.messages}})
+                } else {
+                    state.setState((prev) => {
+                        return {items: prev.items = res.groceryitems, loading: prev.loading = false}
+                    })
+                }
             }))
             .catch((err) => {
                 console.log(err);
@@ -50,18 +55,77 @@ class GroceryList extends React.Component {
         clearInterval(this.state.interval);
     }
 
+// Delete Item
+    deleteItem = (e, itemName) => {
+        e.preventDefault();
+
+        // Filter the unwanted item from state to avoid multiple clicks from user and unwanted confusion
+        const items = this.state.items;
+        const filteredList = items.filter((item) => item.name !== itemName)
+        this.setState((prev) => {return {items: prev.items = filteredList}})
+
+        fetch(`${url}/delete-item/${this.props.url.match.params.name}/${itemName}`)
+        .then((res) => {
+            if (res.messages) {
+                this.setState((prev) => {return {messages: prev.messages = res.messages}})
+            }
+        })
+    }
+
+// Update Purchased Checkbox
+    updatePurchased = (valueToChangeTo, itemName) => {
+        fetch(`${url}/update-item-checkbox/${this.props.url.match.params.name}/${itemName}`, {
+            method: "POST",
+            body: JSON.stringify({purchased: valueToChangeTo}),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        .then((res) => {
+            if (res.messages) {
+                // Handle Errors
+                this.setState((prev) => {return {messages: prev.messages = res.messages}})
+            } else {
+                // Update the checkbox to the specified item
+                const items = this.state.items;
+                items.forEach((item) => {
+                    if (item.name === itemName) item.purchased = !item.purchased;
+                })
+                this.setState((prev) => {return {items: prev.items = items}});
+            }
+        })
+        .catch((err) => {
+            console.log(err);
+        })
+    }
+
+// Render ==========================================================================
     render() {
-        if (this.state.loading){
-            return <h1>Loading...</h1>
-        } else {
+        if (this.state.loading) {
+            // Show loading screen while data is returned
             return (
                 <div>
+                    <InfoMessages messages={this.state.messages} />
+                    <h1>Loading...</h1>
+                </div>
+            )
+        } else {
+            // Show grocery items related to grocery list
+            return (
+                <div>
+                    <InfoMessages messages={this.state.messages} />
+
                     <h1>{this.props.url.match.params.name}</h1>
 
-                    <NavLink to={`/grocery-list/create-item/${this.props.url.match.params.name}`}>Create new item</NavLink>
+                    <NavLink to={`/grocery-list/create-item/${this.props.url.match.params.name}`}>Add new grocery item</NavLink>
 
+                    {/* Show items if any exist or display text telling the user where their items will be displayed */}
                     {this.state.items.length > 0 ?
-                        <GroceryListTable items={this.state.items} />
+                        <GroceryListTable
+                            deleteItem={this.deleteItem}
+                            groceryListName={this.props.url.match.params.name}
+                            items={this.state.items}
+                            updatePurchased={this.updatePurchased} />
                     : 
                         <h2>Add Grocery Items to View Them Here</h2>
                     }          

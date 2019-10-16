@@ -2,16 +2,22 @@
 module.exports = (sequelize, DataTypes) => {
   const GroceryItem = sequelize.define('GroceryItem', {
     groceryListID: DataTypes.INTEGER,
-    name: DataTypes.STRING,
+    name: {
+      type: DataTypes.STRING,
+      unique: true,
+      allowNull: false
+    },
     quantity: DataTypes.INTEGER,
     purchased: DataTypes.BOOLEAN,
-    location: DataTypes.STRING
+    location: {
+      type: DataTypes.STRING,
+      defaultValue: "Anywhere"
+    }
   }, {});
   GroceryItem.associate = function(models) {
     // associations can be defined here
     GroceryItem.belongsTo(models.GroceryList, {
-      foreignKey: "groceryListID",
-      onDelete: "CASCADE"
+      foreignKey: "groceryListID"
     })
 
   };

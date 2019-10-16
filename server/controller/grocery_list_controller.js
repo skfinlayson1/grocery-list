@@ -5,8 +5,8 @@ module.exports = {
 // CREATE GROCERY LIST ----------------------------------------------------------------
     createList(req, res) {
         groceryListQueries.create(req.body.username, req.body.name, (err, newList) => {
-            if (err || !newList) {
-                res.json("Error creating new list")
+            if (err) {
+                res.json({messages: {errors: [ {msg: err.errors[0].message} ] }})
             } else {
                 res.json("created new list");
             }
@@ -17,20 +17,9 @@ module.exports = {
     find(req, res) {
         groceryListQueries.findOne(req.user.username, req.params.name, (err, list) => {
             if (err) {
-                res.json(err)
+                res.json({messages: {errors: [ {msg: err.errors[0].message} ] }})
             } else if (!list) {
-                res.json("No list exists");
-            } else {
-                res.json(list);
-            }
-        })
-    },
-
-// EDIT LIST --------------------------------------------------------------------------
-    edit(req, res) {
-        groceryListQueries.findOne(req.user.username, req.params.name, (err, list) => {
-            if (err || !list) {
-                res.json(err || "List could not be found");
+                res.json({messages: {errors: [ {msg: "Could not find " + req.params.name} ] }});
             } else {
                 res.json(list);
             }
@@ -41,7 +30,7 @@ module.exports = {
     update(req, res) {
         groceryListQueries.update(req.user.username, req.params.name, req.body, (err, response) => {
             if (err) {
-                res.json(err)
+                res.json({messages: {errors: [ {msg: err.errors[0].message} ] }})
             } else {
                 res.json("Success");
             }
@@ -52,14 +41,14 @@ module.exports = {
     deleteList(req, res) {
         groceryListQueries.deleteList(req.body.username, req.body.listName, (err, response) => {
             if (err) {
-                res.json(err);
+                res.json({messages: {errors: [ {msg: err.errors[0].message} ] }});
             } else {
                 res.json("List Deleted");
             }
         })
     },
 
-// CHECK FOR NEW GROCERY LISTS --------------------------------------------------------
+// SEND ALL GROCERY LIST ASSOCIATED WITH THE USER -------------------------------------
     checkForChange(req, res) {
         if (req.user) {
              groceryListQueries.findLists(req.user.username, (err, lists) => {

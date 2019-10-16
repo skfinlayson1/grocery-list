@@ -2,12 +2,15 @@ import React from "react";
 import {NavLink, Redirect} from "react-router-dom";
 import {url} from "../../../config/url_config";
 
+import InfoMessages from "../InfoMessages";
+
 class Landing extends React.Component {
     constructor() {
         super()
 
         this.state = {
             groceryLists: [],
+            messages: false,
             loading: true,
             interval: null
         }
@@ -15,20 +18,23 @@ class Landing extends React.Component {
 
 // ComonentDidMount -----------------------------------------------------------
     componentDidMount() {
+
         // Function to check for new grocery lists entries
         function requestList(state) {
             fetch(`${url}/check-for-change`)
             .then((res) => res.json().then((res) => {
+                if (res.messages) {
+                    state.setState((prev) => {return {messages: prev.messages = res.messages}});
+                }
                 if (res.data) {
                     const data = res.data;
                     state.setState((prev) => {
                         return {groceryLists: prev.groceryLists = data}
                     })
-                } else {
-                    console.log("nothing returned");
                 }
             }))
         }
+        
         // Function to create an interval and return it
         // so it can be cancelled when the component unmounts
         function interval(state) {
@@ -50,6 +56,7 @@ class Landing extends React.Component {
                 this.setState((prev) => {return {loading: prev.loading = false}})
             }
         }))
+
         // Initial check for grocery lists
         requestList(this);
         // Create interval so the lists update as needed
@@ -68,13 +75,12 @@ class Landing extends React.Component {
     handleDelete = (e, listName) => {
         e.preventDefault()
 
+        // Filter the unwanted list from state to avoid multiple clicks from user and unwanted confusion
         const list = this.state.groceryLists;
         const filteredList = list.filter((list) => list.name !== listName)
-
         this.setState((prev) => {return {groceryLists: prev.groceryLists = filteredList}})
-    
-// +++++++++++++++++ If list doesn't get deleted from server add it back to groceryLists with error message +++++++++
 
+        // Send request to delete list
         fetch(`${url}/delete-list`, {
             method: "POST",
             body: JSON.stringify({listName, username: this.props.username}),
@@ -82,17 +88,31 @@ class Landing extends React.Component {
                 'Content-Type': 'application/json'
             }
         })
+        .then((res) => res.json().then((res) => {
+            if (res.messages) {
+                // Handle errors
+                this.setState((prev) => {return {messages: prev.messages = res.messages}})
+            }
+        }))
     }
 
-// Render -------------------------------------------------------------------------------
+// Render =================================================================================
     render() {
-        // Wait for response from the server to see if a user session exists
         if (this.state.loading) {
-            return <h1>Loading</h1>
-        // Once the user is loaded, render the grocery list or tell them to sign in
+            // Wait for response from the server to see if a user session exists
+            return (
+                <div>
+                    <InfoMessages messages={this.state.messages} />
+                    <h1>Loading...</h1>
+                </div>
+            )
         } else if (this.props.username) {
+            // Once the user is loaded, render the grocery list or tell them to sign in
             return (
                 <div id="home">
+
+                    <InfoMessages messages={this.state.messages} />
+
                     <h1>{this.props.username}'s grocery lists</h1>
                     <h2>Click on any grocery list to view it</h2>
                     <NavLink to="/grocery-list/new-list" >
@@ -112,8 +132,8 @@ class Landing extends React.Component {
                     })}
                 </div>
             );
-        // Redirect to user to sign in or sign up
         } else {
+            // Redirect to user to sign in or sign up
             return <Redirect to="/user" />
         }
     }

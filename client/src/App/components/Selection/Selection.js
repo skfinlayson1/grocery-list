@@ -1,6 +1,7 @@
 import React from "react";
 import {NavLink} from "react-router-dom";
 
+// Component to redirect user to sign-in or sign-up
 function Selection() {
     return (
         <div id="home">

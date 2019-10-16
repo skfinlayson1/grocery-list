@@ -5,12 +5,19 @@ module.exports = {
 
 // CREATE NEW GROCERY LIST -------------------------------------------------
     create(username, listName, callback) {
-        GroceryList.create({owner:username, name:listName})
-        .then((user) => {
-            callback(null, user);
-        })
-        .catch((err) => {
-            callback(err);
+        GroceryList.findOne({where: {owner: username, name: listName}})
+        .then((response) => {
+            if (response) {
+                callback({errors: [ {message: "List name already exists"} ] })
+            } else {
+                GroceryList.create({owner:username, name:listName})
+                .then((user) => {
+                    callback(null, user);
+                })
+                .catch((err) => {
+                    callback(err);
+                })
+            }
         })
     },
 
@@ -29,24 +36,17 @@ module.exports = {
     findOne(username, listName, callback) {
         GroceryList.findOne({where: {owner:username, name:listName}})
         .then((res) => {
-            GroceryList.findByPk(res.id, {include: [{model: GroceryItem, as: "groceryitems"}]})
-            .then((list) => {
-                callback(null, list);
-            })
-        })
-        .catch((err) => {
-            callback(err);
-        })
-    },
-
-// DELETE GROCERY LIST -----------------------------------------------------
-    deleteList(username, listName, callback) {
-        GroceryList.findOne({where: {owner:username, name:listName}})
-        .then((user) => {
-            GroceryList.destroy({where: {id: user.id}})
-            .then((response) => {
-                callback(null, response);
-            })
+            if (!res) {
+                callback({errors: [ {message: "Could not find " + listName} ] })
+            } else {
+                GroceryList.findByPk(res.id, {include: [ {model: GroceryItem, as: "groceryitems"} ] })
+                .then((list) => {
+                    callback(null, list);
+                })
+                .catch((err) => {
+                    callback(err);
+                })
+        }
         })
         .catch((err) => {
             callback(err);
@@ -57,9 +57,39 @@ module.exports = {
     update(username, groceryListName, values, callback) {
         GroceryList.findOne({where: {owner: username, name: groceryListName}})
         .then((list) => {
-            list.update({name:values.name})
-            .then((res) => {
-                callback(null, res);
+            GroceryList.findOne({where: {owner: username, name: values.name}})
+            .then((response) => {
+                if (response) {
+                    callback({errors: [ {message: values.name + " already exists"} ] });
+                } else {
+                    list.update({name:values.name})
+                    .then((res) => {
+                        callback(null, res);
+                    })
+                    .catch((err) => {
+                        callback(err);
+                    })
+                }
+            })
+            .catch((err) => {
+                callback(err);
+            })
+        })
+        .catch((err) => {
+            callback(err);
+        })
+    },
+
+// DELETE GROCERY LIST -----------------------------------------------------
+    deleteList(username, listName, callback) {
+        GroceryList.findOne({where: {owner:username, name:listName}})
+        .then((list) => {
+            GroceryItem.destroy({where: {groceryListID: list.id}})
+            .then(() => {
+                list.destroy()
+                .then(() => {
+                    callback(null);
+                })
             })
         })
         .catch((err) => {

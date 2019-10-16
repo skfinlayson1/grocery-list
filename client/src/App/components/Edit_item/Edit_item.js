@@ -4,14 +4,15 @@ import {url} from "../../../config/url_config";
 
 import InfoMessages from "../InfoMessages";
 
-class EditList extends React.Component {
+class EditItem extends React.Component {
     constructor() {
         super();
 
         this.state = {
             name: null,
-            staticName: null,
-            listCount: null,
+            groceryListName: null,
+            quantity: null,
+            location: null,
             messages: false,
             loading: true,
             completed: false
@@ -20,9 +21,11 @@ class EditList extends React.Component {
 
 // Component will mount -------------------------------------------------------------
     componentWillMount() {
+        this.setState((prev) => {return {groceryListName: prev.groceryListName = this.props.url.match.params.groceryListName}})
         // Initial fetch for specific grocery list data
-        fetch(`${url}/grocery-list/edit/${this.props.url.match.params.name}`)
+        fetch(`${url}/find-item/${this.props.url.match.params.groceryListName}/${this.props.url.match.params.name}`)
         .then((res) => res.json().then((res) => {
+            console.log(res.quantity)
             if (res.messages) {
                 // Handle errors
                 this.setState((prev) => {return {messages: prev.message = res.messages}})
@@ -31,8 +34,8 @@ class EditList extends React.Component {
                 this.setState((prev) => {
                     return {
                         name: prev.name = res.name,
-                        staticName: prev.staticName = res.name,
-                        listCount : prev.listCount = res.groceryitems.length || "None",
+                        quantity: prev.quantity = res.quantity,
+                        location: prev.location = res.location,
                         loading: false,
                     }
                 })
@@ -52,7 +55,7 @@ class EditList extends React.Component {
 // Handle submit --------------------------------------------------------------------
     handleSubmit = (e) => {
         // Send updated data to server
-        fetch(`${url}/grocery-list/update/${this.props.url.match.params.name}`, {
+        fetch(`${url}/update-item/${this.props.url.match.params.groceryListName}/${this.props.url.match.params.name}`, {
             method: "POST",
             body: JSON.stringify(this.state),
             headers: {
@@ -82,7 +85,7 @@ class EditList extends React.Component {
             )
         } else if (this.state.completed) {
             // Redirect if updated
-            return <Redirect to={`/`} />
+            return <Redirect to={`/grocery-list/show/${this.props.url.match.params.groceryListName}`} />
         } else {
             // Allow user input once loaded
             return (
@@ -90,7 +93,7 @@ class EditList extends React.Component {
 
                     <InfoMessages messages={this.state.messages} />
 
-                    <label htmlFor="name">Edit Grocery List Name</label>
+                    <label htmlFor="name">Edit Grocery Item Name</label>
                     <input
                         type="text"
                         name="name"
@@ -99,7 +102,23 @@ class EditList extends React.Component {
                         onChange={(e) => this.handleChange("name", e)}
                      />
 
-                    <h3>Grocery Items in {this.state.staticName}: {this.state.listCount}</h3>
+                    <label htmlFor="quantity">Edit Grocery Item Quantity</label>
+                    <input
+                        type="text"
+                        name="quantity"
+                        value={this.state.quantity}
+                        placeholder="Edit Quantity"
+                        onChange={(e) => this.handleChange("quantity", e)}
+                     />
+
+                    <label htmlFor="location">Edit Grocery Location</label>
+                    <input
+                        type="text"
+                        name="location"
+                        value={this.state.location}
+                        placeholder="Edit location"
+                        onChange={(e) => this.handleChange("location", e)}
+                     />
 
                     <button type="submit" onClick={this.handleSubmit}>Update</button>
                 </div>
@@ -108,4 +127,4 @@ class EditList extends React.Component {
     }
 }
 
-export default EditList;
+export default EditItem;

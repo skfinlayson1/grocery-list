@@ -1,6 +1,6 @@
 import React from "react";
 import {NavLink} from 'react-router-dom';
-
+import {url} from "../../../config/url_config";
 import icons from "../../../data/icons/header_icons/index";
 
 import DropDown from "./Drop_down";
@@ -24,6 +24,15 @@ class Navbar extends React.Component {
         })
     }
 
+    signOut = (e) => {
+        e.preventDefault();
+
+        fetch(`${url}/logout`)
+        .then((res) => res.json().then((res) => {
+            window.location.href="/";
+        }))
+    }
+
     render() {
         return (
             <div id="navigation">
@@ -33,7 +42,7 @@ class Navbar extends React.Component {
                         <img className='home' src={icons.homeHeader} alt="Home"></img>    
                     </NavLink>
                     
-                    <NavLink to="/about">
+                    <NavLink to="/">
                         <img className='small-logo' src={icons.logo} alt="Wicked Ways"></img>
                     </NavLink>
                     
@@ -42,7 +51,7 @@ class Navbar extends React.Component {
                     
                 </div>
 
-                <DropDown menuState={this.state.showMenu} toggleMenu={this.menuClick} />
+                <DropDown loggedIn={this.props.loggedIn} signOut={this.signOut} menuState={this.state.showMenu} toggleMenu={this.menuClick} />
             </div>
 
 

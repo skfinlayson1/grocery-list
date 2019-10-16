@@ -2,6 +2,7 @@ const passport = require("passport");
 const LocalStrategy = require('passport-local').Strategy;
 
 const User = require("./../db/models/index").User;
+const authHelper = require("../auth/helpers");
 
 module.exports = {
 
@@ -11,20 +12,20 @@ module.exports = {
 
         passport.use(new LocalStrategy((username, password, done) => {
             User.findOne({where: {username}})
-            .then((res) => {
-                if(!res) {
-                    return done(null, false);
-                } else {
-                    return done(null, res)
+            .then((user) => {
+                if(!user || !authHelper.comparePass(password, user.password)) {
+                    return done(null, false, {message: "Invalid email or password"});
                 }
+
+                return done(null, user);
             })
         }));
 
-        passport.serializeUser(function(user, done) {
+        passport.serializeUser((user, done) => {
             done(null, user.id);
         });
           
-        passport.deserializeUser(function(id, done) {
+        passport.deserializeUser((id, done) => {
             User.findByPk(id)
             .then((user) => {
                 if (!user) {

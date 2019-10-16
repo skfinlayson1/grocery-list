@@ -17,16 +17,19 @@ module.exports = {
         }
       },
       name: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        unique: true
       },
       quantity: {
         type: Sequelize.INTEGER
       },
       purchased: {
-        type: Sequelize.BOOLEAN
+        type: Sequelize.BOOLEAN,
+        defaultValue: false
       },
       location: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        defaultValue: "Anywhere"
       },
       createdAt: {
         allowNull: false,

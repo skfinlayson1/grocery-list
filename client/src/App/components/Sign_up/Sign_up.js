@@ -2,6 +2,8 @@ import React from "react";
 import {Redirect} from "react-router-dom";
 import {url} from "../../../config/url_config";
 
+import InfoMessages from "../InfoMessages";
+
 
 class SignUp extends React.Component {
     constructor() {
@@ -10,10 +12,12 @@ class SignUp extends React.Component {
             username: "",
             password: "",
             email: "",
+            messages: false,
             completed: false
         };
     }
 
+// Handle Change -----------------------------------------------------------
     handleChange = (target, e) => {
         const val = e.target.value;
         this.setState((prevState) => {
@@ -21,6 +25,7 @@ class SignUp extends React.Component {
         });
     }
 
+// Handle Submit -------------------------------------------------------------
     handleSubmit = (e) => {
         e.preventDefault();
 
@@ -34,28 +39,24 @@ class SignUp extends React.Component {
             }
         })
         .then((res) => res.json().then((res) => {
-            if (res.username) {
+            if (res.messages) {
+                this.setState((prev) => {return {messages: prev.messages = res.messages}})
+            } else {
                 this.props.updateLoggedIn(res.username, true);
                 this.setState((prev) => {return {completed: prev.completed = true}})
-            } else {
-                console.log('Error with sign in');
             }
         }))
     }
 
-    signOut = (e) => {
-        e.preventDefault();
-
-        fetch(`${url}/logout`)
-        .then((res) => res.json().then((res) => {
-            console.log(res);
-        }))
-    }
-
+// Render ===================================================================
     render() {
         if (!this.state.completed) {
+            // If user has not signed-up, show sign-in inputs
             return (
                 <div id="sign-up">
+
+                    <InfoMessages messages={this.state.messages} />
+
                     <form>
                         <label htmlFor="username">Username</label>
                         <input
@@ -85,11 +86,11 @@ class SignUp extends React.Component {
                         ></input>
 
                         <button onClick={this.handleSubmit}>Submit</button>
-                        <button onClick={this.signOut}>Sign Out</button>
                     </form>
                 </div>
             )
         } else {
+            // If user has signed-in, redirect to Landing
             return <Redirect to={"/"} />
         }
     }
