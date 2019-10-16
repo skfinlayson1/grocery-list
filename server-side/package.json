@@ -1,17 +1,14 @@
 {
-  "name": "wicked-ways-groceries-list",
+  "name": "server",
   "version": "1.0.0",
-  "description": "Grocery list",
-  "main": "server-side/server.js",
+  "description": "Simple grocery list app",
+  "main": "server.js",
   "scripts": {
-    "start": "node server-side/server.js",
-    "heroku-postbuild": "cd client-side && npm install --only=dev && npm install && npm run build",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "nodemon server.js",
+    "test": "set NODE_ENV=test&& jasmine"
   },
-  "engines": {
-    "npm": "5.7.1",
-    "node": "10.x"
-  },
+  "author": "Shane Finlayson",
+  "license": "ISC",
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
@@ -26,10 +23,11 @@
     "path": "^0.12.7",
     "pg": "^7.12.1",
     "pg-hstore": "^2.3.3",
-    "request": "^2.88.0",
     "sequelize": "^5.19.1",
     "sequelize-cli": "^5.5.1"
   },
-  "author": "Shane Finlayson",
-  "license": "ISC"
+  "devDependencies": {
+    "jasmine": "^3.5.0",
+    "request": "^2.88.0"
+  }
 }
