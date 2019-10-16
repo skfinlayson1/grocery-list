@@ -51,6 +51,7 @@ class EditList extends React.Component {
 
 // Handle submit --------------------------------------------------------------------
     handleSubmit = (e) => {
+        e.preventDefault();
         // Send updated data to server
         fetch(`${url}/grocery-list/update/${this.props.url.match.params.name}`, {
             method: "POST",
@@ -90,18 +91,24 @@ class EditList extends React.Component {
 
                     <InfoMessages messages={this.state.messages} />
 
-                    <label htmlFor="name">Edit Grocery List Name</label>
-                    <input
-                        type="text"
-                        name="name"
-                        value={this.state.name}
-                        placeholder="Edit Name"
-                        onChange={(e) => this.handleChange("name", e)}
-                     />
+                    <form className="standard-form">
 
-                    <h3>Grocery Items in {this.state.staticName}: {this.state.listCount}</h3>
+                        <div className="form-section">
+                            <label htmlFor="name">Edit Grocery List Name</label>
+                            <input
+                                type="text"
+                                name="name"
+                                value={this.state.name}
+                                placeholder="Edit Name"
+                                onChange={(e) => this.handleChange("name", e)}
+                            />
+                        </div>
 
-                    <button type="submit" onClick={this.handleSubmit}>Update</button>
+                        <h3>Grocery Items in {this.state.staticName}: {this.state.listCount}</h3>
+
+                        <button className="submit-button" onClick={this.handleSubmit}>Update</button>
+
+                    </form>
                 </div>
             )
         }

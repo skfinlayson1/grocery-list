@@ -10,7 +10,7 @@ module.exports = {
             if (err || !list) {
                 res.json({messages: {errors: [ {msg: `Could not find a ${values.name} belonging to you`} ] }});
             } else {
-                groceryItemQueries.createItem(list.id, values, (err, response) => {
+                groceryItemQueries.createItem(list.id, values, (err) => {
                     if (err) {
                         res.json({messages: {errors: [ {msg: err.errors[0].message} ] }});
                     } else {

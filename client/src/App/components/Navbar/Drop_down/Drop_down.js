@@ -18,7 +18,7 @@ export default function DropDown(props) {
                         </NavLink>
     
                         <NavLink to="/user">
-                            <h3 onClick={props.signOut}>Sign Out</h3>
+                            <h3 onClick={props.signOut}>Log Out</h3>
                         </NavLink>
     
                         <small onClick={props.toggleMenu}>X</small>
@@ -38,6 +38,8 @@ export default function DropDown(props) {
                         <NavLink to="/user/sign-up">
                             <h3 onClick={props.toggleMenu}>Sign Up</h3>
                         </NavLink>
+
+                        <small onClick={props.toggleMenu}>X</small>
 
                     </nav>
                 </div>

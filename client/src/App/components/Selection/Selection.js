@@ -5,17 +5,18 @@ import {NavLink} from "react-router-dom";
 function Selection() {
     return (
         <div id="home">
-            <h1>Welcome to Wicked Ways Grocery list</h1>
+            <h1>Welcome to Wicked Ways Grocery lists</h1>
             <NavLink to="/user/sign-in">
                 <div className="sign-in-section">
-                    <h2>Please sign in to create a grocery list</h2>
-                    <h4>Sign In</h4>
+                    <h3>Please Sign In</h3>
+                    <h2>Sign In</h2>
                 </div>
             </NavLink>
+            <h2>Or</h2>
             <NavLink to="/user/sign-up">
                 <div className="sign-up-section">
-                    <h2>Or if you are new here</h2>
-                    <h4>Sign Up</h4>
+                    <h3>If you are new here</h3>
+                    <h2>Sign Up</h2>
                 </div>
             </NavLink>
         </div>

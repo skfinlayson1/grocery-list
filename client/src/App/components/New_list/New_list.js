@@ -1,5 +1,5 @@
 import React from "react";
-import {Redirect} from "react-router-dom";
+import {Redirect, NavLink} from "react-router-dom";
 import {url} from "../../../config/url_config";
 
 import InfoMessages from "../InfoMessages";
@@ -47,14 +47,22 @@ class NewList extends React.Component {
             return (
                 <div id="new-list">
 
+                    <NavLink to="/">
+                        <h3 className="back-button">Back</h3>
+                    </NavLink>
+
                     <InfoMessages messages={this.state.messages} />
 
                     <h1>Create a new list</h1>
-                    <form>
-                        <label htmlFor="name">Name of new grocery list</label>
-                        <input type="text" name="name" placeholder="Name" onChange={(e) => this.handleChange("name", e)} />
+                    <form className="standard-form">
+                    
+                        <div className="form-section">
+                            <label htmlFor="name">Name of new grocery list</label>
+                            <input type="text" name="name" placeholder="Name" onChange={(e) => this.handleChange("name", e)} />
+                        </div>
 
-                        <button onClick={this.handleSubmit}>Create</button>
+                        <button className="submit-button" onClick={this.handleSubmit}>Create</button>
+
                     </form>
                 </div>
             )

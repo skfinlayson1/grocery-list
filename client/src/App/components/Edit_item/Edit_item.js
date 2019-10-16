@@ -1,5 +1,5 @@
 import React from "react";
-import {Redirect} from "react-router-dom";
+import {Redirect, NavLink} from "react-router-dom";
 import {url} from "../../../config/url_config";
 
 import InfoMessages from "../InfoMessages";
@@ -25,7 +25,6 @@ class EditItem extends React.Component {
         // Initial fetch for specific grocery list data
         fetch(`${url}/find-item/${this.props.url.match.params.groceryListName}/${this.props.url.match.params.name}`)
         .then((res) => res.json().then((res) => {
-            console.log(res.quantity)
             if (res.messages) {
                 // Handle errors
                 this.setState((prev) => {return {messages: prev.message = res.messages}})
@@ -54,6 +53,7 @@ class EditItem extends React.Component {
 
 // Handle submit --------------------------------------------------------------------
     handleSubmit = (e) => {
+        e.preventDefault();
         // Send updated data to server
         fetch(`${url}/update-item/${this.props.url.match.params.groceryListName}/${this.props.url.match.params.name}`, {
             method: "POST",
@@ -91,36 +91,51 @@ class EditItem extends React.Component {
             return (
                 <div>
 
+                    <NavLink to={`/grocery-list/show/${this.props.url.match.params.groceryListName}`}>
+                        <h3 className="back-button">Back</h3>
+                    </NavLink>
+
                     <InfoMessages messages={this.state.messages} />
 
-                    <label htmlFor="name">Edit Grocery Item Name</label>
-                    <input
-                        type="text"
-                        name="name"
-                        value={this.state.name}
-                        placeholder="Edit Name"
-                        onChange={(e) => this.handleChange("name", e)}
-                     />
+                    <form className="standard-form">
 
-                    <label htmlFor="quantity">Edit Grocery Item Quantity</label>
-                    <input
-                        type="text"
-                        name="quantity"
-                        value={this.state.quantity}
-                        placeholder="Edit Quantity"
-                        onChange={(e) => this.handleChange("quantity", e)}
-                     />
+                        <div className="form-section">
+                            <label htmlFor="name">Edit Grocery Item Name</label>
+                            <input
+                                type="text"
+                                name="name"
+                                value={this.state.name}
+                                placeholder="Edit Name"
+                                onChange={(e) => this.handleChange("name", e)}
+                            />
+                        </div>
 
-                    <label htmlFor="location">Edit Grocery Location</label>
-                    <input
-                        type="text"
-                        name="location"
-                        value={this.state.location}
-                        placeholder="Edit location"
-                        onChange={(e) => this.handleChange("location", e)}
-                     />
+                        <div className="form-section">
+                            <label htmlFor="quantity">Edit Grocery Item Quantity</label>
+                            <input
+                                type="text"
+                                name="quantity"
+                                value={this.state.quantity}
+                                placeholder="Edit Quantity"
+                                onChange={(e) => this.handleChange("quantity", e)}
+                            />
+                        </div>
 
-                    <button type="submit" onClick={this.handleSubmit}>Update</button>
+                        <div className="form-section">
+                            <label htmlFor="location">Edit Grocery Location</label>
+                            <input
+                                type="text"
+                                name="location"
+                                value={this.state.location}
+                                placeholder="Edit location"
+                                onChange={(e) => this.handleChange("location", e)}
+                            />
+                        </div>
+
+                        <button className="submit-button" onClick={this.handleSubmit}>Update</button>
+
+                    </form>
+
                 </div>
             )
         }

@@ -113,11 +113,18 @@ class GroceryList extends React.Component {
             // Show grocery items related to grocery list
             return (
                 <div>
+
+                    <NavLink to="/">
+                        <h3 className="back-button">Back</h3>
+                    </NavLink>
+
                     <InfoMessages messages={this.state.messages} />
 
                     <h1>{this.props.url.match.params.name}</h1>
 
-                    <NavLink to={`/grocery-list/create-item/${this.props.url.match.params.name}`}>Add new grocery item</NavLink>
+                    <NavLink to={`/grocery-list/create-item/${this.props.url.match.params.name}`}>
+                        <h3 className="create-item">Add new grocery item</h3>
+                    </NavLink>
 
                     {/* Show items if any exist or display text telling the user where their items will be displayed */}
                     {this.state.items.length > 0 ?

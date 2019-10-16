@@ -109,24 +109,30 @@ class Landing extends React.Component {
         } else if (this.props.username) {
             // Once the user is loaded, render the grocery list or tell them to sign in
             return (
-                <div id="home">
+                <div id="landing">
 
                     <InfoMessages messages={this.state.messages} />
 
                     <h1>{this.props.username}'s grocery lists</h1>
-                    <h2>Click on any grocery list to view it</h2>
+
                     <NavLink to="/grocery-list/new-list" >
-                        <h3>Create new grocery list</h3>    
+                        <h3 className="create-list">Create new grocery list</h3>   
                     </NavLink>
     
                     {this.state.groceryLists.map((list) => {
                         return (
-                            <div>
+                            <div className="grocery-list-section">
                                 <NavLink to={`/grocery-list/show/${list.name}`}>
-                                    <h2>{list.name}</h2>
+                                    <h2 className="grocery-list-text">{list.name}</h2>
+                                    <h4>Click to View</h4>
                                 </NavLink>
-                                <NavLink to={`/grocery-list/edit/${list.name}`}>Edit</NavLink>
-                                <h3 onClick={(e) => this.handleDelete(e, list.name)}>Delete</h3>
+
+                                <div className="update-delete">
+                                    <NavLink className="update-list" to={`/grocery-list/edit/${list.name}`}>
+                                        <h3>update</h3>
+                                    </NavLink>
+                                    <h3 className="delete-list" onClick={(e) => this.handleDelete(e, list.name)}>Delete</h3>
+                                </div>
                             </div>
                         )
                     })}
