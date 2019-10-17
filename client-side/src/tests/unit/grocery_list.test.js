@@ -9,7 +9,7 @@ describe("/", () => {
     it("should render the GroceryList page", (done) => {
         const wrapper = shallow(<GroceryList />);
 
-        expect(wrapper.debug()).toContain("<InfoMessages messages={false} />");
+        expect(wrapper.debug()).toContain("<InfoMessages messages={false} />"); 
         done(); 
     })  
 

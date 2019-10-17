@@ -10,7 +10,7 @@ describe("/", () => {
         const params = {match: {params: "newItem"}}
         const wrapper = shallow(<NewItem url={params} />);
 
-        expect(wrapper.debug()).toContain("<InfoMessages messages={false} />");
+        expect(wrapper.debug()).toContain("<InfoMessages messages={false} />"); 
         done(); 
     })  
 

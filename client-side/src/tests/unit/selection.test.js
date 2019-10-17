@@ -11,7 +11,7 @@ describe("/", () => {
 
         expect(wrapper.find("#home").exists()).toBe(true);
         expect(wrapper.find(".sign-in-section").exists()).toBe(true);
-        expect(wrapper.find(".sign-up-section").exists()).toBe(true);
+        expect(wrapper.find(".sign-up-section").exists()).toBe(true); 
         done(); 
     })  
 

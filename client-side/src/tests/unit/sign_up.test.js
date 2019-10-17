@@ -11,7 +11,7 @@ describe("/", () => {
 
         expect(wrapper.find("#sign-up").exists()).toBe(true);
         expect(wrapper.find(".back-button").exists()).toBe(true);
-        expect(wrapper.find(".standard-form").exists()).toBe(true);
+        expect(wrapper.find(".standard-form").exists()).toBe(true); 
         done(); 
     })  
 

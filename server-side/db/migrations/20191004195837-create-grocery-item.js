@@ -11,7 +11,7 @@ module.exports = {
       groceryListID: {
         type: Sequelize.INTEGER,
         references: {
-          model: "GroceryLists",
+          model: "GroceryLists", 
           key: "id",
           as: "groceryListID"
         }

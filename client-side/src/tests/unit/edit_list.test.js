@@ -9,7 +9,7 @@ describe("/", () => {
     it("should render the EditList page", (done) => {
         const wrapper = shallow(<EditList />);
 
-        expect(wrapper.debug()).toContain("<InfoMessages messages={false} />");
+        expect(wrapper.debug()).toContain("<InfoMessages messages={false} />"); 
         done(); 
     })  
 

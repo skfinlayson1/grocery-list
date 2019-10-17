@@ -10,7 +10,7 @@ describe("Navbar test", () => {
 
         expect(wrapper.find("#navigation").exists()).toBe(true);
         expect(wrapper.find("#navigation").text()).toContain("<NavLink />")
-
+ 
         done()
     })
 

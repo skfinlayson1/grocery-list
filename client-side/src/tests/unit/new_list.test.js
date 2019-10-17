@@ -11,7 +11,7 @@ describe("/", () => {
         const wrapper = shallow(<NewList url={params} />);
 
         expect(wrapper.debug()).toContain("<InfoMessages messages={false} />");
-        done(); 
+        done();  
     })  
 
 })

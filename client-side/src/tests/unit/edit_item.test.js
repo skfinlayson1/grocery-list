@@ -9,7 +9,7 @@ describe("/", () => {
     it("should render the EditItem page", (done) => {
         const wrapper = shallow(<EditItem />);
 
-        expect(wrapper.debug()).toContain("<InfoMessages messages={false} />");
+        expect(wrapper.debug()).toContain("<InfoMessages messages={false} />"); 
         done(); 
     })  
 

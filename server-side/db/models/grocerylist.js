@@ -6,10 +6,6 @@ module.exports = (sequelize, DataTypes) => {
   }, {});
   GroceryList.associate = function(models) {
     // associations can be defined here
-    GroceryList.belongsTo(models.User, {
-      foreignKey: "owner",
-      onDelete: "CASCADE"
-    })
 
     GroceryList.hasMany(models.GroceryItem, {
       foreignKey: "groceryListID",
