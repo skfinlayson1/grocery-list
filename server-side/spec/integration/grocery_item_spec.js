@@ -61,7 +61,7 @@ describe("Grocery Item Routes", () => {
         // Create Item
         it("should create a new item", (done) => {
             const options = {
-                url: `${base}/create-item`,
+                url: `${base}/grocery-item/create-item`,
                 form: {
                     groceryListName: this.groceryList.name,
                     itemName: "sugar",
@@ -77,7 +77,7 @@ describe("Grocery Item Routes", () => {
 
         // Delete Item
         it("should delete a item from list", (done) => {
-            request.get(`${base}/delete-item/${this.groceryList.name}/${this.groceryItem.name}`, (err, res, body) => {
+            request.get(`${base}/grocery-item/delete/${this.groceryList.name}/${this.groceryItem.name}`, (err, res, body) => {
                 expect(body).toContain("Deleted")
                 done();
             })
@@ -89,7 +89,7 @@ describe("Grocery Item Routes", () => {
 
         // Find Item
         it("should locate a specific item in list", (done) => {
-            request.get(`${base}/find-item/${this.groceryList.name}/${this.groceryItem.name}`, (err, res, body) => {
+            request.get(`${base}/grocery-item/find/${this.groceryList.name}/${this.groceryItem.name}`, (err, res, body) => {
                 expect(body).toContain(`"id":1,"groceryListID":1,"name":"water","quantity":5,"purchased":false,"location":"Anywhere"`)
                 done();
             })
@@ -98,7 +98,7 @@ describe("Grocery Item Routes", () => {
         // Update Item
         it("should update specified item", (done) => {
             const options = {
-                url: `${base}/update-item/${this.groceryList.name}/${this.groceryItem.name}`,
+                url: `${base}/grocery-item/update/${this.groceryList.name}/${this.groceryItem.name}`,
                 form: {
                     name: "h20",
                     quantity: "10",
@@ -119,7 +119,7 @@ describe("Grocery Item Routes", () => {
         // update item checkbox
         it("should update a specific item's checkbox", (done) => {
             const options = {
-                url: `${base}/update-item-checkbox/${this.groceryList.name}/${this.groceryItem.name}`,
+                url: `${base}/grocery-item/update-checkbox/${this.groceryList.name}/${this.groceryItem.name}`,
                 form: {
                     purchased: true
                 }

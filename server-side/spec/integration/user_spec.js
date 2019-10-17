@@ -37,7 +37,7 @@ describe("User Routes", () => {
         // sign up
         it("should sign a user up", (done) => {
             options = {
-                url:`${base}/sign-up`,
+                url:`${base}/user/sign-up`,
                 form: {
                     username: "strix",
                     password: "123456",
@@ -55,7 +55,7 @@ describe("User Routes", () => {
         // sign in
         it("should sign a user in", (done) => {
             options = {
-                url:`${base}/sign-in`,
+                url:`${base}/user/sign-in`,
                 form: {
                     username: "shane",
                     password: 123456,
@@ -105,7 +105,7 @@ describe("User Routes", () => {
 
         // check status
         it("should check the user status", (done) => {
-            request.get(`${base}/check-status`, (err, res, body) => {
+            request.get(`${base}/user/check`, (err, res, body) => {
                 expect(err).toBeNull()
                 expect(res.statusCode).toBe(200);  
                 expect(body).toContain(`{"username":"shane"}`)
@@ -115,7 +115,7 @@ describe("User Routes", () => {
 
         // sign out
         it("should sign the user out", (done) => {
-            request.get(`${base}/logout`, (err, res, body) => {
+            request.get(`${base}/user/logout`, (err, res, body) => {
                 expect(err).toBeNull()
                 expect(res.statusCode).toBe(200);  
                 expect(body).toContain("signed out");

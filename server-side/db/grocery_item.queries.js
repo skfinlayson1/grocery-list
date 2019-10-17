@@ -11,12 +11,20 @@ module.exports = {
             purchased: false,
             location: values.location
         }
-        GroceryItem.create(vals)
-        .then((response) => {
-            callback(null, response);
-        })
-        .catch((err) => {
-            callback(err);
+        GroceryItem.findOne({where: {groceryListID: groceryListId, name: vals.name}})
+        .then((res) => {
+            if (res) {
+                callback({errors: [ {message: vals.name + " already exists in this grocery list"} ] })
+            } else {
+                // create item
+                GroceryItem.create(vals)
+                .then((response) => {
+                    callback(null, response);
+                })
+                .catch((err) => {
+                    callback(err);
+                })
+            }
         })
     },
 

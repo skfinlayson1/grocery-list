@@ -31,7 +31,7 @@ class SignUp extends React.Component {
 
         const val = JSON.stringify(this.state);
 
-        fetch(`${url}/sign-up`, {
+        fetch(`${url}/user/sign-up`, {
             method: "POST",
             body: val,
             headers: {

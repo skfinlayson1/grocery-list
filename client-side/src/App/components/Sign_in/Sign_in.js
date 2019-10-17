@@ -30,7 +30,7 @@ class SignIn extends React.Component {
 
         const val = JSON.stringify(this.state);
 
-        fetch(`${url}/sign-in`, {
+        fetch(`${url}/user/sign-in`, {
             method: "POST",
             body: val,
             headers: {

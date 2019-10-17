@@ -27,7 +27,7 @@ class Navbar extends React.Component {
     signOut = (e) => {
         e.preventDefault();
 
-        fetch(`${url}/logout`)
+        fetch(`${url}/user/logout`)
         .then((res) => res.json().then((res) => {
             window.location.href="/";
         }))

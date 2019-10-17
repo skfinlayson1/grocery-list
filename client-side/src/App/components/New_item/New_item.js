@@ -37,7 +37,7 @@ class NewList extends React.Component {
         val = JSON.stringify(val);
 
         // Send grocery item data to server
-        fetch(`${url}/create-item`, {
+        fetch(`${url}/grocery-item/create-item`, {
             method: "POST",
             body: val,
             headers: {

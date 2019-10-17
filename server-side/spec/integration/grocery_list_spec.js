@@ -43,7 +43,7 @@ describe("Grocery List Routes", () => {
 
         // Returns single list
         it("should retutn single list", (done) => {
-            request.get(`${base}/check-for-change`, (err, res, body) => {
+            request.get(`${base}/grocery-list/check`, (err, res, body) => {
                 expect(body).toContain(`"id":1,"owner":"shane","name":"Standard"`)
                 done();
             })
@@ -57,7 +57,7 @@ describe("Grocery List Routes", () => {
                 owner: "shane"
             })
             .then((lists) => {
-                request.get(`${base}/check-for-change`, (err, res, body) => {
+                request.get(`${base}/grocery-list/check`, (err, res, body) => {
                     expect(body).toContain(`"id":2,"owner":"shane","name":"New List"`)
                     done();
                 })
@@ -76,7 +76,7 @@ describe("Grocery List Routes", () => {
         // create list
         it("should create a grocery list", (done) => {
             const values = {
-                url: `${base}/create-list`,
+                url: `${base}/grocery-list/create-list`,
                 form: {
                     username: "shane",
                     name: "New List"
@@ -91,7 +91,7 @@ describe("Grocery List Routes", () => {
         // delete list
         it("should delete the list", (done) => {
             request.post({
-                url: `${base}/delete-list`,
+                url: `${base}/grocery-list/delete-list`,
                 form: {
                     username: "shane",
                     listName: "Standard"

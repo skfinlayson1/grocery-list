@@ -5,11 +5,13 @@ module.exports = {
 
 // CREATE NEW GROCERY LIST -------------------------------------------------
     create(username, listName, callback) {
+        // Check if List already exists
         GroceryList.findOne({where: {owner: username, name: listName}})
         .then((response) => {
             if (response) {
-                callback({errors: [ {message: "List name already exists"} ] })
+                callback({errors: [ {message: listName + " already exists"} ] })
             } else {
+                // Create list
                 GroceryList.create({owner:username, name:listName})
                 .then((user) => {
                     callback(null, user);
@@ -55,13 +57,16 @@ module.exports = {
 
 // UPDATE GROCERY LIST ------------------------------------------------------
     update(username, groceryListName, values, callback) {
+        // Find list
         GroceryList.findOne({where: {owner: username, name: groceryListName}})
         .then((list) => {
+            // Check if list already exists with desired new name
             GroceryList.findOne({where: {owner: username, name: values.name}})
             .then((response) => {
                 if (response) {
                     callback({errors: [ {message: values.name + " already exists"} ] });
                 } else {
+                    // Update list
                     list.update({name:values.name})
                     .then((res) => {
                         callback(null, res);

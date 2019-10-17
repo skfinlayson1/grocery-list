@@ -4,7 +4,6 @@ module.exports = (sequelize, DataTypes) => {
     groceryListID: DataTypes.INTEGER,
     name: {
       type: DataTypes.STRING,
-      unique: true,
       allowNull: false
     },
     quantity: DataTypes.INTEGER,

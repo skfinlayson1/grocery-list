@@ -26,7 +26,7 @@ class NewList extends React.Component {
 
         const val = {username: this.props.username, name: this.state.name};
 
-        fetch(`${url}/create-list`, {
+        fetch(`${url}/grocery-list/create-list`, {
             method: "POST",
             body: JSON.stringify(val),
             headers: {

@@ -24,7 +24,7 @@ class EditItem extends React.Component {
         if (this.props.url) {
             this.setState((prev) => {return {groceryListName: prev.groceryListName = this.props.url.match.params.groceryListName}})
             // Initial fetch for specific grocery list data
-            fetch(`${url}/find-item/${this.props.url.match.params.groceryListName}/${this.props.url.match.params.name}`)
+            fetch(`${url}/grocery-item/find/${this.props.url.match.params.groceryListName}/${this.props.url.match.params.name}`)
             .then((res) => res.json().then((res) => {
                 if (res.messages) {
                     // Handle errors
@@ -57,7 +57,7 @@ class EditItem extends React.Component {
     handleSubmit = (e) => {
         e.preventDefault();
         // Send updated data to server
-        fetch(`${url}/update-item/${this.props.url.match.params.groceryListName}/${this.props.url.match.params.name}`, {
+        fetch(`${url}/grocery-item/update/${this.props.url.match.params.groceryListName}/${this.props.url.match.params.name}`, {
             method: "POST",
             body: JSON.stringify(this.state),
             headers: {

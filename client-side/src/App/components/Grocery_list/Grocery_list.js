@@ -66,7 +66,7 @@ class GroceryList extends React.Component {
         const filteredList = items.filter((item) => item.name !== itemName)
         this.setState((prev) => {return {items: prev.items = filteredList}})
 
-        fetch(`${url}/delete-item/${this.props.url.match.params.name}/${itemName}`)
+        fetch(`${url}/grocery-item/delete/${this.props.url.match.params.name}/${itemName}`)
         .then((res) => {
             if (res.messages) {
                 this.setState((prev) => {return {messages: prev.messages = res.messages}})
@@ -76,7 +76,7 @@ class GroceryList extends React.Component {
 
 // Update Purchased Checkbox
     updatePurchased = (valueToChangeTo, itemName) => {
-        fetch(`${url}/update-item-checkbox/${this.props.url.match.params.name}/${itemName}`, {
+        fetch(`${url}/grocery-item/update-checkbox/${this.props.url.match.params.name}/${itemName}`, {
             method: "POST",
             body: JSON.stringify({purchased: valueToChangeTo}),
             headers: {

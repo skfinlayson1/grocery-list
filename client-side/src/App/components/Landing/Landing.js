@@ -21,7 +21,7 @@ class Landing extends React.Component {
 
         // Function to check for new grocery lists entries
         function requestList(state) {
-            fetch(`${url}/check-for-change`)
+            fetch(`${url}/grocery-list/check`)
             .then((res) => res.json().then((res) => {
                 if (res.messages) {
                     state.setState((prev) => {return {messages: prev.messages = res.messages}});
@@ -45,7 +45,7 @@ class Landing extends React.Component {
         }
 
         // Check to make sure the user session persists
-        fetch(`${url}/check-status`)
+        fetch(`${url}/user/check`)
         .then((res) => res.json().then((res) => {
             if (res.username) {
                 const username = res.username;
@@ -81,7 +81,7 @@ class Landing extends React.Component {
         this.setState((prev) => {return {groceryLists: prev.groceryLists = filteredList}})
 
         // Send request to delete list
-        fetch(`${url}/delete-list`, {
+        fetch(`${url}/grocery-list/delete-list`, {
             method: "POST",
             body: JSON.stringify({listName, username: this.props.username}),
             headers: {
